@@ -75,3 +75,46 @@ The `sanitize=False` parameter is safe in this case because:
 ---
 
 **✨ Your sentiment analyzer should now deploy successfully!** 🎉
+
+---
+
+## 🔄 **Railway Deployment Compatibility Update**
+
+### Added: `ui_html_safe()` Wrapper Function
+
+A compatibility wrapper function `ui_html_safe()` has been added to handle different NiceGUI versions gracefully:
+
+```python
+def ui_html_safe(content: str):
+    """
+    Compatibility wrapper for ui.html that handles different NiceGUI versions.
+    Tries to call ui.html with sanitize=False (for versions that support it),
+    and falls back to ui.html without sanitize if that fails.
+    """
+    try:
+        return ui.html(content, sanitize=False)
+    except TypeError:
+        return ui.html(content)
+```
+
+### Why This Was Added
+
+- **Version Compatibility**: Different NiceGUI versions have different requirements for the `sanitize` parameter
+- **Deployment Reliability**: The wrapper ensures the app works across different deployment environments
+- **Future-Proofing**: Makes it easier to update NiceGUI versions without breaking HTML rendering
+
+### Additional Changes for Railway
+
+1. **Port Binding**: Updated `ui.run()` to use the `PORT` environment variable for Railway compatibility:
+   ```python
+   port = int(os.environ.get("PORT", 8080))
+   ui.run(title="Sentiment Reader — Senith", host='0.0.0.0', port=port, reload=True)
+   ```
+
+2. **Startup Logging**: Added version logging for diagnostics:
+   ```python
+   print(f"[Startup] Python version: {sys.version}")
+   print(f"[Startup] NiceGUI version: {NICEGUI_VERSION}")
+   ```
+
+3. **Requirements Pinned**: NiceGUI version range is pinned to `>=1.4.28,<2.0.0` to ensure compatibility
