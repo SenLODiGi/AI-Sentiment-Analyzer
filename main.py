@@ -345,7 +345,7 @@ with ui.column().classes('main-container'):
                         result_box.clear()
                         with result_box:
                             with ui.card().classes('glass-strong').style('padding:18px;'):
-                                ui.html(f"<div style='font-size:48px;text-align:center'>{analysis['emoji']}</div>")
+                                ui.html(f"<div style='font-size:48px;text-align:center'>{analysis['emoji']}</div>", sanitize=False)
                                 ui.label(f"{analysis['sentiment']}").classes('text-lg').style('font-weight:800;text-align:center;margin-top:6px;color:white;')
                                 ui.label(f"Score: {analysis['polarity']:.3f}  •  Subjectivity: {analysis['subjectivity']:.3f}").classes('text-sm text-white/60').style('text-align:center;margin-bottom:8px;')
                                 
@@ -359,7 +359,7 @@ with ui.column().classes('main-container'):
                                     ui.label("🔍 Key words").classes('text-sm text-white/70').style('margin-top:12px;')
                                     with ui.row().classes('gap-2').style('flex-wrap:wrap;margin-top:6px;'):
                                         for kp in analysis['key_phrases'][:8]:
-                                            ui.html(f'<span style="padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:13px;color:rgba(255,255,255,0.7)">{kp}</span>')
+                                            ui.html(f'<span style="padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:13px;color:rgba(255,255,255,0.7)">{kp}</span>', sanitize=False)
                         
                         refresh_history_list()
                         ui.notify(f"✨ Analysis complete — {analysis['sentiment']}", type='positive')
@@ -373,7 +373,7 @@ with ui.column().classes('main-container'):
                         result_box.clear()
                         with result_box:
                             with ui.card().classes('glass-strong').style('padding:18px;text-align:center;'):
-                                ui.html('<div style="font-size:32px;margin-bottom:10px;">🧠</div>')
+                                ui.html('<div style="font-size:32px;margin-bottom:10px;">🧠</div>', sanitize=False)
                                 ui.label("Performing Deep Analysis...").style('color:white;font-weight:600;')
                                 ui.label("Analyzing sentences, words, and patterns").classes('text-sm text-white/60')
                         
@@ -395,7 +395,7 @@ with ui.column().classes('main-container'):
                         result_box.clear()
                         with result_box:
                             with ui.card().classes('glass-strong').style('padding:18px;margin-bottom:15px;'):
-                                ui.html(f"<div style='font-size:48px;text-align:center'>{deep_analysis['basic']['emoji']}</div>")
+                                ui.html(f"<div style='font-size:48px;text-align:center'>{deep_analysis['basic']['emoji']}</div>", sanitize=False)
                                 ui.label(f"📊 Deep Analysis: {deep_analysis['basic']['sentiment']}").classes('text-xl').style('font-weight:800;text-align:center;margin-top:6px;color:white;')
                                 ui.label(f"Polarity: {deep_analysis['basic']['polarity']:.3f} | Subjectivity: {deep_analysis['basic']['subjectivity']:.3f}").classes('text-sm text-white/60').style('text-align:center;')
                             
@@ -434,7 +434,7 @@ with ui.column().classes('main-container'):
                                     ui.label("🏷️ Most Frequent Words").classes('text-lg').style('font-weight:700;color:white;margin-bottom:10px;')
                                     with ui.row().classes('gap-2').style('flex-wrap:wrap;'):
                                         for word, freq in deep_analysis["word_frequency"][:8]:
-                                            ui.html(f'<span style="padding:4px 8px;border-radius:12px;background:rgba(255,255,255,0.1);font-size:12px;color:white;">{word} ({freq})</span>')
+                                            ui.html(f'<span style="padding:4px 8px;border-radius:12px;background:rgba(255,255,255,0.1);font-size:12px;color:white;">{word} ({freq})</span>', sanitize=False)
                         
                         refresh_history_list()
                         ui.notify(f"🧠 Deep Analysis Complete — {deep_analysis['basic']['sentiment']}", type='positive')
@@ -451,7 +451,7 @@ with ui.column().classes('main-container'):
             # App title card
             with ui.card().classes('card-glass'):
                 with ui.column().classes('items-center'):
-                    ui.html('<div style="font-size:32px;margin-bottom:8px;">🧠</div>')
+                    ui.html('<div style="font-size:32px;margin-bottom:8px;">🧠</div>', sanitize=False)
                     ui.label("AI Sentiment Analyzer").classes('text-xl').style('font-weight:800;color:white;margin-bottom:5px;text-align:center;')
                     ui.label("Analyze text sentiment with advanced AI insights").classes('text-xs text-white/70').style('text-align:center;line-height:1.4;')
             
@@ -461,7 +461,7 @@ with ui.column().classes('main-container'):
                 
                 with ui.column().classes('items-center').style('margin-bottom:15px;'):
                     profile_datauri = read_profile_image_datauri(PROFILE_IMAGE)
-                    ui.html(f'<img src="{profile_datauri}" alt="profile" class="profile-img">')
+                    ui.html(f'<img src="{profile_datauri}" alt="profile" class="profile-img">', sanitize=False)
                     ui.label(NAME).classes('text-lg').style('font-weight:700;color:white;margin-top:10px;text-align:center;')
                     ui.label(TITLE).classes('text-sm text-white/70').style('line-height:1.4;text-align:center;margin-top:5px;')
                 
@@ -472,7 +472,7 @@ with ui.column().classes('main-container'):
                             <a href="{url}" target="_blank" class="social-icon" title="{label}">
                                 <i class="{icon}"></i>
                             </a>
-                        ''')
+                        ''', sanitize=False)
             
             # Quick examples
             with ui.card().classes('card-glass'):
@@ -496,7 +496,7 @@ def refresh_history_list():
     history_list.clear()
     if not analysis_history:
         with history_list:
-            ui.html('<div style="color:rgba(255,255,255,0.5);padding:12px;text-align:center;font-size:12px;">No analyses yet<br>Try the examples above!</div>')
+            ui.html('<div style="color:rgba(255,255,255,0.5);padding:12px;text-align:center;font-size:12px;">No analyses yet<br>Try the examples above!</div>', sanitize=False)
         return
     
     for entry in reversed(analysis_history[-6:]):
@@ -520,7 +520,7 @@ ui.html(f'''
     <div class="footer">
         Built with ❤️ — {NAME} • <span style="opacity:.7">NiceGUI • TextBlob • Python</span>
     </div>
-''')
+''', sanitize=False)
 
 # Run the app
 if __name__ in {"__main__", "__mp_main__"}:
