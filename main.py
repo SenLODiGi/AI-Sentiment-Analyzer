@@ -22,7 +22,10 @@ def get_nicegui_version():
     try:
         import pkg_resources
         return pkg_resources.get_distribution("nicegui").version
+    except ImportError:
+        return "unknown"
     except Exception:
+        # pkg_resources.DistributionNotFound or other pkg_resources errors
         return "unknown"
 
 NICEGUI_VERSION = get_nicegui_version()
@@ -40,9 +43,11 @@ def ui_html_safe(content: str):
     """
     try:
         return ui.html(content, sanitize=False)
-    except TypeError:
+    except TypeError as e:
         # Fallback for NiceGUI versions that don't accept sanitize keyword
-        return ui.html(content)
+        if 'sanitize' in str(e):
+            return ui.html(content)
+        raise
 
 # ---------- CONFIG ----------
 PROFILE_IMAGE = 'image.png'
